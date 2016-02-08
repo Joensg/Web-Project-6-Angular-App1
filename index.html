@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp1">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Angular App1</title>
+    <style>
+        table, th , td  {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        table tr:nth-child(odd)	{
+            background-color: #f1f1f1;
+        }
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+    </style>
+    <script src="https://code.angularjs.org/1.4.8/angular.min.js"></script>
+</head>
+    
+<body>
+    <div ng-controller="productsCtrl">
+        <p>Sort by: <input type="text" ng-model="productsCtrl.userinput"></span></p>
+    <table>
+        <tbody>
+            <tr ng-repeat="x in myData | orderBy:productsCtrl.userinput">
+                <td>
+                    <a href="{{x.clickUrl}}">
+                        <img src="{{x.imageUrl}}" alt="productimage" height="100" />
+                    </a>
+                </td>
+                <td>{{ 'category: ' + x.category }}</td>
+                <td>{{ 'subcat0_s: ' + x.subcat0_s }}</td>
+                <td>{{ 'subcat1_s: ' + x.subcat1_s }}</td>
+                <td>{{ 'subcat2_s: ' + x.subcat2_s }}</td>
+                <td>{{ 'weight: ' + x.weight }}</td>
+                <td>{{ 'price: ' + (x.price | currency:x.currency)}}</td>
+                <td>{{ 'stockstatus_i: ' + x.stockstatus_i }}</td>
+                <td>{{ 'sku: ' + x.sku }}</td>
+                <td>{{ 'language_s: ' + x.language_s }}</td>
+                <td>{{ 'title: ' + x.title }}</td>
+                <td>{{ '_id: ' + x._id }}</td>
+                <td>{{ 'lastModified: ' + (x.lastModified | date:'medium') }}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+<script>
+    var app = angular.module('myApp1', []);
+    
+    app.controller('productsCtrl', function($scope, $http) {
+        this.userinput = '';
+        
+        $http.get("https://insight.reflow.tv/feed/json/55b8bbbce4b042766e9cb450?o=sku&n=50&s=0&q=language_s:sa_ar").success(function(data, status, headers, config) {
+            $scope.myData = data;
+        });
+    });
+</script>
+
+</body>
+
+</html>
